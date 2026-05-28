@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghost Shop</title>
+
+  <style>
+    header {
+      background-image: url(ioio.jpg);
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'Comic Sans MS', cursive;
+      padding: 20px;
+      text-align: center;
+      border: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
+      padding: 0;
+      padding-top: 130px;
+      background-image: url('kl.jpg');
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    body.dark.mode {
+      background-color: #ffffff;
+      color: #fff;
+    }
+    .theme-toggle {
+      background-color: #009df8;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #8dc1fc;
+      text-decoration: none;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #009df8;
+      font-weight: bold;
+    }
+
+    .search {
+      margin-top: 20px;
+    }
+
+    .search input[type="text"] {
+      padding: 10px;
+      width: 300px;
+    }
+
+    .search button {
+      padding: 10px 20px;
+      background-color: #0199ff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .search button:hover {
+      background-color: rgb(101, 181, 252);
+    }
+
+    main {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .recipe {
+      border: 1px solid #009df8;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .recipe img {
+      width: 500px;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    h2 {
+      font-family: 'Comic Sans MS', cursive;
+      color: #009df8;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    p {
+      margin-top: 10px;
+      color: #009df8;
+    }
+
+    a {
+      color: #0082fc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: #3a3636;
+      padding: 10px 0;
+      text-align: center;
+      color: #fff;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+    iframe {
+      width: 300px;   
+      height: 200px;  
+      border: 0;      
+      border-radius: 8px; 
+      display: block;
+      margin: 0 auto;
+    }
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .contact-info {
+      text-align: left;
+      padding-left: 20px;
+    }
+    .contact-info a {
+      color: #0199ff;
+      text-decoration: none;
+    }
+    .social-links{
+      display: flex;
+      justify-content: space-around;
+    }
+    .social-icon {
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+    }
+    .subscription-form{
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .subscription-form form{
+      font-family: 'Comic Sans MS', cursive;
+      display: inline-block;
+    }
+    .subscription-form input{
+      font-family: 'Comic Sans MS', cursive;
+      width: 200px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    .subscription-form button {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #001761;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    #scrollToTopButton{
+      font-family: 'Comic Sans MS', cursive;
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0082fc;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    canvas#snowfall {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    .rating {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .star {
+      font-size: 24 px;
+      cursor: pointer;
+      color: gold;
+    }
+    .star.selected {
+      color:darkorange
+    }
+    .votes {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .like-button, dislike-button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background-color: #f0f0f0;
+    }
+    .like-button:hover, .dislike-button:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* Модальное окно */
+    .modal {
+      display: none; /* скрыто по умолчанию */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      color: #0082fc;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 5px;
+      width: 70%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 4px 8px rgb(170, 207, 255);
+      text-align: center;
+    }
+
+    .modal-content img {
+      max-width: 300px;
+      max-height: 200px;
+      object-fit: contain;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #0199ff;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .seasonal-ingredients li:hover {
+      transform: scale(1.02);
+    }
+    .season-image {
+      width: 200px;
+      height: 150px;
+      border-radius: 5px;
+    }
+    .scrollable-container {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .ingredient:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .search button:hover {
+      background-color: #ff814a;
+      color: #fff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    nav a:hover, h1:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: background-color 0.3s ease;
+    }
+    .ingredient img:hover {
+      transform: scale(1.1);
+      opacity: 0.8,;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .social-icon:hover {
+      background-color: #fff;
+      border-radius: 50%;
+      transform: scale(1.2);
+      transition: backgound-color 0.3s ease, transform 0.3s ease;
+    }
+    .subscription-form button:hover {
+      background-color: #ff814a;
+      color: #fff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <audio id="background-music" autoplay loop>
+    <source src="once-in-paris-168895.mp3" type="audio/mpeg">
+  </audio>
+  
+  <header>
+    <a href="лёша.html" class="logo">Ghost Shop</a>
+    <nav>
+      <ul>
+        <li><a href="#">Geek Товары</a></li>
+        <li><a href="Funko POP.html">Funko POP</a></li>
+        <li><a href="#">Импортные продукты</a></li>
+        <li><a href="Обзоры.html">Обзоры</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Доставка и Возврат</a></li>
+      </ul>
+    </nav>
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Поиск...">
+      <button onclick="searchRecipes()">Найти</button>
+    </div>
+    <canvas id="snowfall"></canvas>
+    <button class="theme-toggle" onclick="toggleDarkMode()">Тёмная тема</button>
+  </header> 
+
+  <main>
+    <h1>СКИДКИ</h1>
+
+    <div class="recipe">
+      <img src="dd793709-2601-4e0d-b03b-2f916d51f49e.jpg" alt="Funko Pop Почита">
+      <h2>Фигурка Funko Pop Человек-бензопила Почита</h2>
+      <p>Производитель: Funko<br>Модель: 80322<br>Цена: 8.000 Тг</p>
+
+      <div class="rating">
+        <span class="star" data-value="1">☆</span>
+        <span class="star" data-value="2">☆</span>
+        <span class="star" data-value="3">☆</span>
+        <span class="star" data-value="4">☆</span>
+        <span class="star" data-value="5">☆</span>
+      </div>
+      
+      <div class="votes">
+        <button class="like-button">👍 <span class="like-count">0</span></button>
+        <button class="dislike-button">👎 <span class="dislike-count">0</span></button>
+      </div>
+
+      <a href="#" onclick="showRecipes('Фигурка Funko Pop Человек-бензопила Почита', 'dd793709-2601-4e0d-b03b-2f916d51f49e.jpg', 'Производитель: Funko, Модель: 80322, Цена: 10.999 Тг')">Подробнее</a>
+    </div>
+
+    <div class="recipe">
+      <img src="a6615c9e-bc83-4d95-99c3-3a115abc000d.jpg" alt="Funko Pop Killua">
+      <h2>Фигурка Funko POP! Hunter x Hunter Killua Zoldyck</h2>
+      <p>Производитель: Funko<br>Модель: 32333<br>Цена: 11.433 Тг</p>
+      <div class="rating">
+        <span class="star" data-value="1">☆</span>
+        <span class="star" data-value="2">☆</span>
+        <span class="star" data-value="3">☆</span>
+        <span class="star" data-value="4">☆</span>
+        <span class="star" data-value="5">☆</span>
+      </div>
+      
+      <div class="votes">
+        <button class="like-button">👍 <span class="like-count">0</span></button>
+        <button class="dislike-button">👎 <span class="dislike-count">0</span></button>
+      </div>
+
+      <a href="#" onclick="showRecipes('Фигурка Funko POP! Killua Zoldyck', 'a6615c9e-bc83-4d95-99c3-3a115abc000d.jpg', 'Производитель: Funko, Модель: 32333, Цена: 15.999 Тг')">Подробнее</a>
+    </div>
+
+    <div class="recipe">
+      <img src="129f8ff0-9759-4202-b56c-f58f123e7b12.jpg" alt="Дазай Осаму Nendoroid">
+      <h2>Фигурка Проза бродячих псов Дазай Осаму (10см)</h2>
+      <p>Производитель: Nendoroid<br>Модель: 55004<br>Цена: 34.599 Тг</p>
+      <div class="rating">
+        <span class="star" data-value="1">☆</span>
+        <span class="star" data-value="2">☆</span>
+        <span class="star" data-value="3">☆</span>
+        <span class="star" data-value="4">☆</span>
+        <span class="star" data-value="5">☆</span>
+      </div>
+      
+      <div class="votes">
+        <button class="like-button">👍 <span class="like-count">0</span></button>
+        <button class="dislike-button">👎 <span class="dislike-count">0</span></button>
+      </div>
+
+      <a href="#" onclick="showRecipes('Фигурка Дазай Осаму Nendoroid', '129f8ff0-9759-4202-b56c-f58f123e7b12.jpg', 'Производитель: Nendoroid, Модель: 55004, Цена: 43.999 Тг')">Подробнее</a>
+    </div>
+    <button id="scrollToTopButton">Наверх</button>
+  </main>
+
+  <footer>
+    <div class="subscription-form">
+      <p><strong>Подписка на рассылку:</strong></p>
+      <form>
+        <input type="email" placeholder="Введите ваш email" required>
+        <button type="submit">Подписаться</button>
+      </form>
+    </div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d726.6330231077914!2d76.9129876175492!3d43.2402690180242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2skz!4v1761212441731!5m2!1sru!2skz" style="border:0; "allowfullscreen=" "loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
+    <div class="footer-container">
+      <p>&copy;  2025 Ghost Shop. Все права защищены.</p>
+    
+    <div class="social-links">
+      <a href="https://www.youtube.com/@gh0st_.ish0p" target="_blank">
+        <img src="YouTube_dark_icon_(2017).svg.png" alt="YouTube" class="social-icon">
+      </a>
+      <a href="https://www.instagram.com/ghost.geek_shop?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+        <img src="free-instagram-logo-icon-3497-thumb.png" alt="Instagram" class="social-icon">
+      </a>
+      <a href="https://t.me/aytizmlesha" target="_blank">
+        <img src="8276081.png" alt="Telegram" class="social-icon">
+      </a>
+    </div>
+
+    <div class="contact-info">
+      <p><strong>Контактная информация:</strong></p>
+      <p>Электронная почта: <a href="Главная.html">ghosthyl8@gmail.com</a></p>
+      <p>Телефон: <a href="tel+77077077777">+7 (707) 707 - 77 - 77</a></p>
+      <p>Адрес: 107 Абая проспект, Алматы, Казахстан</p>
+    </div>
+  </div>
+ </footer>
+    
+
+  <!-- Модальное окно -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="recipeTitle"></h2>
+      <img id="recipeImage" src="" alt="">
+      <p id="recipeDescription"></p>
+    </div>
+  </div>
+
+  <script>
+    function showRecipes(title, imageSrc, description) {
+      var modal = document.getElementById('myModal');
+      document.getElementById('recipeTitle').textContent = title;
+      document.getElementById('recipeImage').src = imageSrc;
+      document.getElementById('recipeDescription').textContent = description;
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      var modal = document.getElementById('myModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    function searchRecipes(){
+
+    var input, filter, recipes, recipe, title, description, i;
+
+    input = document.getElementById('searchInput');
+
+    filter = input.value.toLowerCase();
+
+    recipes = document.querySelectorAll('.recipe');
+
+    for (i = 0; i < recipes.length; i++){
+
+      recipes[i].style.display = 'none';
+    }
+
+    for (i = 0; i< recipes.length; i++) {
+
+      recipe = recipes[i];
+
+      title = recipe.getElementsByTagName('h2')[0].textContent.toLowerCase();
+
+      description = recipe.getElementsByTagName('p')[0].textContent.toLowerCase();
+
+      if (title.indexOf(filter) > -1 || description.indexOf(filter) > -1) {
+
+        recipe.style.display = '';
+
+        return;
+      }
+    }
+  }
+
+  window.onscroll = function(){
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20){
+      document.getElementById("scrollToTopButton").style.display = "block";
+    } else {
+      document.getElementById("scrollToTopButton").style.display = "none";
+    }
+  };
+
+  document.getElementById("scrollToTopButton").onclick = function(){
+    scrollToTop();
+  };
+
+  function scrollToTop(){
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  const canvas = document.getElementById('snowfall');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+  const snowflakes = [];
+  const numberOfSnowflakes = 250;
+  function generateSnowflakes() {
+    for (let i = 0; i < numberOfSnowflakes; i++) {
+      snowflakes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 3 + 1,
+      speed: Math.random() + 0.5
+      });
+    }
+  }
+  function drawSnowflakes() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#FFF';
+    ctx.beginPath();
+    for (let i = 0; i < numberOfSnowflakes; i++){
+      const snowflake = snowflakes[i];
+      ctx.moveTo(snowflake.x, snowflake.y);
+      ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2, true);
+    }
+    ctx.fill();
+    moveSnowflakes();
+  }
+  function moveSnowflakes() {
+    for (let i = 0; i < numberOfSnowflakes; i++) {
+      const snowflake = snowflakes[i];
+      snowflake.y += snowflake.speed;
+      if (snowflake.y > height){
+        snowflake.y = -5;
+      }
+    }
+  }
+  function animateSnowflakes() {
+    drawSnowflakes();
+    requestAnimationFrame(animateSnowflakes);
+  }
+  generateSnowflakes();
+  animateSnowflakes();
+  window.addEventListener('resize', function() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    snowflakes.length = 0;
+    generateSnowflakes();
+  })
+  
+  function parallaxScroll(){
+    const header = document.querySelector('header');
+    const scrolled = window.pageYOffset;
+    header.style.backgroundPositionY = -(scrolled * 0.3) + 'px';
+  }
+  window.addEventListener('scroll', parallaxScroll);
+
+  function toggleDarkMode() {
+    var body = document.body;
+    body.classList.toggle('dark-mode');
+    if (body.classList.contains('dark-mode')){
+      document.querySelector('.theme-toggle').innerText = 'Светлая тема';
+      body.style.backgroundImage = "url('popo.jpg')";
+    } else {
+      document.querySelector('.theme-toggle').innerText = 'Темная тема';
+      body.style.backgroundImage = "url('kl.jpg')";
+    }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const stars = document.querySelectorAll('.star');
+      const likeButtons = document.querySelectorAll('.like-button');
+      const dislikeButtons = document.querySelectorAll('.dislike-button');
+
+      stars.forEach(star => {
+        star.addEventListener('click', (e) => {
+          const value = e.target.dataset.value;
+          const parent = e.target.parantElement;
+          parent.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+          for (let i = 0; i < value; i++) {
+            parent.querySelectorAll('.star')[i].classList.add('selected');
+          }
+        });
+      });
+
+      likeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const count = e.target.querySelector('.like-count');
+          count.textContent = parseInt(count.textContent) +1;
+        })
+      })
+
+      dislikeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const count = e.target.querySelector('.dislike-count');
+          count.textContent = parseInt(count.textContent) + 1;
+        })
+      })
+    });
+  
+
+
+  </script>
+</body>
+</html>
